@@ -4,6 +4,7 @@ services:
   collectd:
     image: fr3nd/collectd:5.5.0-1
     container_name: collectd
+    restart: always
     privileged: true
     network_mode: host
     volumes:
@@ -12,6 +13,7 @@ services:
   influxdb:
     image: influxdb:1.5.0
     container_name: influxdb
+    restart: always
     ports:
       - "8086:8086"
       - "25826:25826/udp"
@@ -24,6 +26,7 @@ services:
   grafana:
     image: grafana/grafana:5.0.1
     container_name: grafana
+    restart: always
     ports:
       - "3000:3000"
     networks:
