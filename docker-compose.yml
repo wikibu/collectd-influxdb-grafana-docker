@@ -1,0 +1,36 @@
+version: '2'
+
+services:
+  collectd:
+    image: fr3nd/collectd:5.5.0-1
+    privileged: true
+    network_mode: host
+    volumes:
+      - /proc:/mnt/proc:ro
+      - ./collectd.conf:/etc/collectd/collectd.conf
+  influxdb:
+    image: influxdb:1.0.0
+    ports:
+      - "8086:8086"
+      - "25826:25826/udp"
+    networks:
+      - monitor
+    volumes:
+      - /data/influxdb:/var/lib/influxdb
+      - ./influxdb.conf:/etc/influxdb/influxdb.conf
+      - ./types.db:/usr/share/collectd/types.db:ro
+  grafana:
+    image: grafana/grafana:3.1.1
+    ports:
+      - "3000:3000"
+    networks:
+      - monitor
+    volumes:
+      - /data/grafana:/var/lib/grafana
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=your_grafana_password
+
+networks:
+  monitor:
+    driver: bridge
