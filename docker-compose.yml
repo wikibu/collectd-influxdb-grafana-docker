@@ -3,13 +3,15 @@ version: '2'
 services:
   collectd:
     image: fr3nd/collectd:5.5.0-1
+    container_name: collectd
     privileged: true
     network_mode: host
     volumes:
       - /proc:/mnt/proc:ro
       - ./collectd.conf:/etc/collectd/collectd.conf
   influxdb:
-    image: influxdb:1.0.0
+    image: influxdb:1.5.0
+    container_name: influxdb
     ports:
       - "8086:8086"
       - "25826:25826/udp"
@@ -21,6 +23,7 @@ services:
       - ./types.db:/usr/share/collectd/types.db:ro
   grafana:
     image: grafana/grafana:5.0.1
+    container_name: grafana
     ports:
       - "3000:3000"
     networks:
